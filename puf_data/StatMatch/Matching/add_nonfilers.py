@@ -30,11 +30,12 @@ def add_nonfiler(cpsrets, nonfiler):
 
     nonfiler = copy.deepcopy(nonfiler.filter(regex=r'jcps\d{1,2}$|' +
                                                    r'icps\d{1}$|' +
-                                                   'jcps100| cpsseq|' +
+                                                   'jcps100|cpsseq|' +
                                                    r'nu\d{1,2}|nu18_dep|' +
                                                    'n1820|n21|' +
                                                    'elderly_dependent|wasp|' +
-                                                   'wass|xstate'))
+                                                   'wass|xstate|' +
+                                                   'cbppindex|pppos|h_seq')) #YH: added three variables to help merge cps back
 
     nonfiler['filer'] = 0
     nonfiler['soiseq'] = 0
@@ -264,7 +265,8 @@ def add_nonfiler(cpsrets, nonfiler):
 
     # weight
     nonfiler['matched_weight'] = wt
-
+    nonfiler.to_csv('add_nonfilers_nonfiler.csv') #YH
     final = pd.concat([cpsrets, nonfiler], sort=False, ignore_index=True)
     final['finalseq'] = final.index + 1
+    final.to_csv('add_nonfilers.csv') #YH
     return final

@@ -37,5 +37,6 @@ def adjfilst(cps_recs):
 
     filers = cps_recs.copy()[(cps_recs['filst'] == 1)]
     nonfilers = cps_recs.copy()[(cps_recs['filst'] == 0)]
-
+    filers.to_csv('adjfilst_filers.csv')
+    nonfilers.to_csv('adjfilst_nonfilers.csv')
     return filers, nonfilers

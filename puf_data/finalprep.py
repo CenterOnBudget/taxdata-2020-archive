@@ -265,7 +265,7 @@ def remove_unused_variables(data):
         'jcps67',
         'jcps64',
         'jcps65',
-        'cpsseq',
+       # 'cpsseq', #YH:delete this line for rematching purpose
         'jcps97',
         'jcps96',
         'jcps95',
@@ -276,7 +276,7 @@ def remove_unused_variables(data):
         'jcps90',
         'jcps99',
         'jcps98',
-        'soiseq',
+       # 'soiseq', #YH:delete this line for rematching purpose
         'jcps79',
         'jcps78',
         'wt',
@@ -354,17 +354,17 @@ def remove_unused_variables(data):
     data = data.drop(ALL_UNUSED_READ_VARS, 1)
 
     NEW_POST_PR83_UNUSED_READ_VARS = [
-        'SOISEQ',
+        #'SOISEQ', #YH:delete this line for rematching purpose 
         'age_dep1', 'age_dep2', 'age_dep3', 'age_dep4', 'age_dep5',
         'age_oldest', 'age_youngest',
-        'cpsseq',
+       # 'cpsseq', #YH:delete this line for rematching purpose
         'e07140',
         'e52852',
         'e52872',
         'finalseq',
         'ftpt_head', 'ftpt_spouse',
         'gender_head', 'gender_spouse',
-        'h_seq',
+        #'h_seq',
         'hga_head', 'hga_spouse',
         'head_age',
         'i',

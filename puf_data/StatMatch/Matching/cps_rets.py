@@ -21,6 +21,7 @@ class Returns(object):
         self.cps = cps
         self.h_nums = np.unique(self.cps['h_seq'].values)
         self.nunits = 0
+        self.cbppunits = 0 # YH: to track unique tax units
 
         # Set filing thresholds
         self.single = 10150
@@ -69,7 +70,7 @@ class Returns(object):
         for index, row in self.cps.iterrows():
             if row['oi_off'] == 20:
                 row['alm_val'] = row['oi_val']
-
+        cbpplist = [] # YH: CPS records with CBPP tax unit identifiers
         for num in tqdm(self.h_nums):
             self.nunits = 0
             # Clear house_units list
@@ -116,8 +117,14 @@ class Returns(object):
                 if not unit['t_flag']:
                     continue
                 self.tax_units.append(self.output(unit, house_dict))
+
+            cbpplist.extend(house_dict)
+
         final_output = pd.DataFrame(self.tax_units)
         # final_output.to_csv('CPSRETS2014.csv', index=False)
+        cbpplist = pd.DataFrame(cbpplist)
+        cbpplist.to_csv('cbpplist.csv')
+        final_output.to_csv('cps_rets.csv', index=False)
         return final_output
 
     def create(self, record, house):
@@ -134,6 +141,8 @@ class Returns(object):
         """
         # Set head of household as record
         self.nunits += 1
+        self.cbppunits += 1 #YH: to help merge cps back
+        record['cbppindex'] = self.cbppunits #YH: to help merge cps back
         # Flag head of household
         record['flag'] = True
 
@@ -245,6 +254,7 @@ class Returns(object):
                                 person['a_spouse'] == record['a_lineno']):
                             spouse = person
                             break
+                spouse['cbppindex'] = self.cbppunits #YH: to help merge cps
                 ages = spouse['a_age']
                 # record['ages'] = ages
                 # assert not np.isnan(record['ages']), sp_ptr
@@ -697,6 +707,7 @@ class Returns(object):
                         dflag = True
                 if dflag:
                     individual['d_flag'] = True
+                    individual['cbppindex'] = self.cbppunits# YH: to help merge with cps
                     depne += 1
                     dage = individual['a_age']
                     record[('dep' + str(depne))] = house.index(individual)
@@ -1290,5 +1301,7 @@ class Returns(object):
                             unit['socsec'])
         # Find filing status of record
         self.filst(record)
-
+        record['cbppindex'] = unit['cbppindex'] #YH: help merge cps
+        record['pppos'] = unit['pppos'] #YH: include pppos and h_seq variables in the processed dataset to help identify individuals
+        record['h_seq'] = unit['h_seq'] #YH
         return record

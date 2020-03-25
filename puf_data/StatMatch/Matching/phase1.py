@@ -152,7 +152,7 @@ def phaseone(CPS, SOI):
     countx = pd.merge(SOI_counts, CPS_counts, how='inner',
                       on=['idept', 'ijs', 'iagede', 'idepne',
                           'ikids', 'iself', 'people'])
-    countx['factor'] = np.where(countx['CPS_wgt'] > 0,
+    countx['factor'] = np.where(countx['CPS_wgt'] > 0,                                                                                                                                                                             
                                 countx['SOI_wgt'] /
                                 countx['CPS_wgt'].astype(float),
                                 0.)

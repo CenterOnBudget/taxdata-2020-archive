@@ -10,9 +10,10 @@ import pandas as pd
 
 def add_cps(cps_recs, match, puffile):
     cpsfile = cps_recs.filter(regex=r'jcps\d{1,2}$|icps\d{1}$|' +
-                                    'jcps100|cpsseq|' +
+                                    'jcps100|cpsseq|' +  #YH corrected a typo on their part, now cpsseq is preserved
                                     r'nu\d{1,2}|nu18_dep|n1820|n21|' +
-                                    'elderly_dependent|wasp|wass|xstate')
+                                    'elderly_dependent|wasp|wass|xstate|' +
+                                    'yhindex|pppos|h_seq') #YH: to help merge cps back
 
     puffile = puffile[(puffile['recid'] != 999999) &
                       (puffile['recid'] != 999998) &
@@ -31,5 +32,5 @@ def add_cps(cps_recs, match, puffile):
     merge_2.rename(columns={'cwt': 'cweight'}, inplace=True)
     merge_2['matched_weight'] = merge_2['cweight']
     merge_2['cweight'] = merge_2['wt']
-
+    merge_2.to_csv("add_cps.csv")
     return merge_2
